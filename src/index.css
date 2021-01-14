@@ -142,3 +142,8 @@ input:focus {
   padding: 0;
   border: 0;
 }
+
+body {
+  font-family: 'Quicksand';
+  box-sizing: border-box;
+}
