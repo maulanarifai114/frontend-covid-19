@@ -1,4 +1,4 @@
-.box-data {
+.box_data {
   cursor: pointer;
   border-radius: 30px;
   padding: 30px;
@@ -8,45 +8,45 @@
   box-shadow: 0 4px 5px 0 rgb(20, 20, 20)
 }
 
-.box-total:hover {
+.box_total:hover {
   box-shadow: 0 0 3px 2px #f0f358
 }
 
-.box-secure:hover {
+.box_secure:hover {
   box-shadow: 0 0 3px 2px #72ee62
 }
 
-.box-death:hover {
+.box_death:hover {
   box-shadow: 0 0 3px 2px #ee6262
 }
 
-.box-title {
+.box_title {
   font-weight: 400;
   font-size: 1.35rem;
   line-height: 1em;
   margin: 0 0 15px 0;
 }
 
-.box-title-total {
+.box_title_total {
   color: #f0f358;
 }
 
-.box-title-secure {
+.box_title_secure {
   color: #72ee62;
 }
 
-.box-title-death {
+.box_title_death {
   color: #ee6262;
 }
 
-.big-number {
+.big_number {
   font-weight: 700;
   font-size: 3rem;
   line-height: 1em;
   margin: 0 0 15px 0;
 }
 
-.small-number {
+.small_number {
   font-weight: 600;
   font-size: 1.1rem;
   line-height: 1em;
@@ -54,21 +54,21 @@
   letter-spacing: 2px;
 }
 
-.number-total {
+.number_total {
   color: rgb(40, 40, 40);
   background-color: #f0f358;
   border-radius: 10px;
   padding: 10px;
 }
 
-.number-secure {
+.number_secure {
   color: rgb(40, 40, 40);
   background-color: #72ee62;
   border-radius: 10px;
   padding: 10px;
 }
 
-.number-death {
+.number_death {
   color: rgb(40, 40, 40);
   background-color: #ee6262;
   border-radius: 10px;

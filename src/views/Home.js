@@ -3,7 +3,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Title from '../components/Title'
 import Today from '../components/Today'
-import '../assets/css/home.scoped.css'
+import '../assets/css/home.css'
 
 export default function Home() {
   let [cases, setCases] = useState(0)
@@ -22,10 +22,10 @@ export default function Home() {
     const date = `${splitT[0]} ${splitZ[0]}`
     setDate(moment(date).format('LLLL'))
   }
-  const url = 'https://apicovid19indonesia-v2.vercel.app/api'
+  const url = 'https://apicovid19indonesia-v2.vercel.app/api/indonesia'
 
   useEffect(() => {
-    axios.get(`${url}/indonesia/more`)
+    axios.get(`${url}/more`)
     .then((res)=> {
       const today = res.data
       setCases(today.total.positif)
@@ -40,7 +40,7 @@ export default function Home() {
     .catch((err)=> {
       console.log(err.response);
     })
-  });
+  }, []);
 
   return (
     <div className="container">

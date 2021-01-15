@@ -1,9 +1,4 @@
-.container {
-  padding-top: 60px;
-  min-height: 100vh;
-}
-
-.title-home {
+.title_home {
   font-weight: 600;
   font-size: 2rem;
   line-height: 1.2em;
@@ -18,6 +13,6 @@
   text-align: center;
 }
 
-.mb-60 {
+.mb_60 {
   margin: 0 0 60px 0;
 }
