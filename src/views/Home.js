@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 import Title from '../components/Title'
 import Today from '../components/Today'
+import '../assets/css/home.scoped.css'
 
 export default function Home() {
   let [cases, setCases] = useState(0)
@@ -10,19 +12,30 @@ export default function Home() {
   let [plusSecure, setPlusSecure] = useState(0)
   let [death, setDeath] = useState(0)
   let [plusDeath, setPlusDeath] = useState(0)
+  let [date, setDate] = useState(null)
+
+  const funcSetDate = (payload)=> {
+    const idLocale = require('moment/locale/id'); 
+    moment.locale('id', idLocale)
+    const splitT = payload.split('T')
+    const splitZ = splitT[1].split('.000Z')
+    const date = `${splitT[0]} ${splitZ[0]}`
+    setDate(moment(date).format('LLLL'))
+  }
   const url = 'https://apicovid19indonesia-v2.vercel.app/api'
 
   useEffect(() => {
     axios.get(`${url}/indonesia/more`)
     .then((res)=> {
       const today = res.data
-      console.log(today);
       setCases(today.total.positif)
       setSecure(today.total.sembuh)
       setDeath(today.total.meninggal)
       setPlusCases(today.penambahan.positif)
       setPlusSecure(today.penambahan.sembuh)
       setPlusDeath(today.penambahan.meninggal)
+      funcSetDate(today.penambahan.created)
+      console.log(today);
     })
     .catch((err)=> {
       console.log(err.response);
@@ -31,7 +44,10 @@ export default function Home() {
 
   return (
     <div className="container">
-      <Title name="Data Covid - 19 Indonesia Hari Ini"/>
+      <Title 
+        name="Data Covid - 19 Indonesia Ter-update"
+        date={date}
+      />
       <Today 
         cases={cases} plusCases={plusCases}
         secure={secure} plusSecure={plusSecure}

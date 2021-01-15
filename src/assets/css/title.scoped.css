@@ -1,0 +1,23 @@
+.container {
+  padding-top: 60px;
+  min-height: 100vh;
+}
+
+.title-home {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.2em;
+  color: #fff;
+  margin: 0 0 15px 0;
+}
+
+.date {
+  font-size: 1.2rem;
+  line-height: 1.5em;
+  color: white;
+  text-align: center;
+}
+
+.mb-60 {
+  margin: 0 0 60px 0;
+}

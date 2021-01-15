@@ -8,8 +8,16 @@
   box-shadow: 0 4px 5px 0 rgb(20, 20, 20)
 }
 
-.box-data:hover {
-  box-shadow: 0 0 10px 5px rgb(80, 80, 80)
+.box-total:hover {
+  box-shadow: 0 0 3px 2px #f0f358
+}
+
+.box-secure:hover {
+  box-shadow: 0 0 3px 2px #72ee62
+}
+
+.box-death:hover {
+  box-shadow: 0 0 3px 2px #ee6262
 }
 
 .box-title {
