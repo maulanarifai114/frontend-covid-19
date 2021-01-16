@@ -9,6 +9,10 @@
 }
 
 .box_total:hover {
+  box-shadow: 0 0 3px 2px #589bf3
+}
+
+.box_positive:hover {
   box-shadow: 0 0 3px 2px #f0f358
 }
 
@@ -28,6 +32,10 @@
 }
 
 .box_title_total {
+  color: #589bf3;
+}
+
+.box_title_positive {
   color: #f0f358;
 }
 
@@ -55,6 +63,13 @@
 }
 
 .number_total {
+  color: rgb(40, 40, 40);
+  background-color: #589bf3;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.number_positive {
   color: rgb(40, 40, 40);
   background-color: #f0f358;
   border-radius: 10px;

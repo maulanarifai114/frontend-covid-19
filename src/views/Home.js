@@ -17,6 +17,8 @@ export default function Home() {
   let [plusSecure, setPlusSecure] = useState(0)
   let [death, setDeath] = useState(0)
   let [plusDeath, setPlusDeath] = useState(0)
+  let [positive, setPositive] = useState(0)
+  let [plusPositive, setPlusPositive] = useState(0)
   let [date, setDate] = useState(null)
   let [dataChartLine, setChartLine] = useState({
     labels: [],
@@ -24,14 +26,10 @@ export default function Home() {
       {
         label: 'Covid - 19 Indonesia',
         data: [0,0,0],
-        backgroundColor: [
-          '#f0f358',
-          '#72ee62',
-          '#ee6262',
-        ],
       }
     ]
   })
+  let [tglCases, setTglCases] = useState([])
 
   const funcSetDate = (payload)=> {
     const splitT = payload.split('T')
@@ -44,11 +42,13 @@ export default function Home() {
   useEffect(() => {
     axios.get(`${url}/harian`)
     .then((res)=> {
+      let tglCases = []
       const start = res.data.length-1-7
       const end = res.data.length-1
       const allData = res.data
       let labels = []
       let cases = []
+      let positive = []
       let secure = []
       let death = []
       allData.forEach((e, index)=> {
@@ -56,17 +56,25 @@ export default function Home() {
         if (index > start && index <= end) {
           labels.push(moment(day[0]).format('dddd'))
           cases.push(e.positif_kumulatif)
+          positive.push(e.dirawat)
           secure.push(e.sembuh_kumulatif)
           death.push(e.meninggal_kumulatif)
+          tglCases.push(moment(day[0]).format('ll'))
         }
       })
-      console.log('labels', labels);
+      setTglCases(tglCases)
       setChartLine({
         labels: labels,
         datasets: [
           {
             label: 'Total Kasus',
             data: cases,
+            fill: false,
+            borderColor: '#589bf3',
+          },
+          {
+            label: 'Positif',
+            data: positive,
             fill: false,
             borderColor: '#f0f358',
           },
@@ -92,9 +100,11 @@ export default function Home() {
       setCases(today.total.positif)
       setSecure(today.total.sembuh)
       setDeath(today.total.meninggal)
+      setPositive(today.total.dirawat)
       setPlusCases(today.penambahan.positif)
       setPlusSecure(today.penambahan.sembuh)
       setPlusDeath(today.penambahan.meninggal)
+      setPlusPositive(today.penambahan.dirawat)
       funcSetDate(today.penambahan.created)
       console.log(today);
     })
@@ -114,6 +124,7 @@ export default function Home() {
         cases={cases} plusCases={plusCases}
         secure={secure} plusSecure={plusSecure}
         death={death} plusDeath={plusDeath}
+        positive={positive} plusPositive={plusPositive}
       />
       <hr/>
       <h3 className="subtitle">1 Minggu Terakhir</h3>
@@ -122,6 +133,31 @@ export default function Home() {
           data={dataChartLine}
           height={300}
           options={{
+            tooltips: {
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              titleFontFamily: 'Quicksand',
+              bodyFontFamily: 'Quicksand',
+              footerMarginTop: 16,
+              footerFontFamily: 'Quicksand',
+              xPadding: 12,
+              yPadding: 12,
+              borderColor: '#fff',
+              caretSize: 10,
+              multiKeyBackground: '#00000000',
+              callbacks: {
+                footer: function(tooltipItem, data) {
+                  const day = tooltipItem[0].label
+                  const label = data.labels
+                  let date = ''
+                  label.forEach((el, index)=> {
+                    if(day === el) {
+                      date = tglCases[index]
+                    }
+                  })
+                  return date
+                }
+              }
+            },  
             scales: {
               yAxes: [{
                 ticks: {
@@ -140,7 +176,8 @@ export default function Home() {
               labels: {
                 fontFamily: 'Quicksand',
                 fontColor: '#ffffff',
-                fontSize: 16
+                fontSize: 16,
+                boxWidth: 20
               }
               
             },
