@@ -20,7 +20,16 @@ export default function Home() {
   let [positive, setPositive] = useState(0)
   let [plusPositive, setPlusPositive] = useState(0)
   let [date, setDate] = useState(null)
-  let [dataChartLine, setChartLine] = useState({
+  let [totalDataLine, setTotalDataLine] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Covid - 19 Indonesia',
+        data: [0,0,0],
+      }
+    ]
+  })
+  let [addDataLine, setAddDataLine] = useState({
     labels: [],
     datasets: [
       {
@@ -30,6 +39,59 @@ export default function Home() {
     ]
   })
   let [tglCases, setTglCases] = useState([])
+
+  const options = {
+    tooltips: {
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
+      titleFontFamily: 'Quicksand',
+      bodyFontFamily: 'Quicksand',
+      footerMarginTop: 16,
+      footerFontFamily: 'Quicksand',
+      xPadding: 12,
+      yPadding: 12,
+      borderColor: '#fff',
+      caretSize: 10,
+      multiKeyBackground: '#00000000',
+      callbacks: {
+        footer: function(tooltipItem, data) {
+          const day = tooltipItem[0].label
+          const label = data.labels
+          let date = ''
+          label.forEach((el, index)=> {
+            if(day === el) {
+              date = tglCases[index]
+            }
+          })
+          return date
+        }
+      }
+    },  
+    scales: {
+      yAxes: [{
+        ticks: {
+          fontFamily: 'Quicksand',
+          fontColor: 'white'
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          fontFamily: 'Quicksand',
+          fontColor: 'white'
+        }
+      }]
+    },        
+    legend: {
+      labels: {
+        fontFamily: 'Quicksand',
+        fontColor: '#ffffff',
+        fontSize: 16,
+        boxWidth: 20
+      }
+      
+    },
+    responsive: true,
+    maintainAspectRatio: false 
+  }
 
   const funcSetDate = (payload)=> {
     const splitT = payload.split('T')
@@ -51,19 +113,27 @@ export default function Home() {
       let positive = []
       let secure = []
       let death = []
+      let addCases = []
+      let addPositive = []
+      let addSecure = []
+      let addDeath = []
       allData.forEach((e, index)=> {
         const day = e.tanggal.split('T')
         if (index > start && index <= end) {
           labels.push(moment(day[0]).format('dddd'))
           cases.push(e.positif_kumulatif)
-          positive.push(e.dirawat)
+          positive.push(e.dirawat_kumulatif)
           secure.push(e.sembuh_kumulatif)
           death.push(e.meninggal_kumulatif)
+          addCases.push(e.positif)
+          addPositive.push(e.dirawat)
+          addSecure.push(e.sembuh)
+          addDeath.push(e.meninggal)
           tglCases.push(moment(day[0]).format('ll'))
         }
       })
       setTglCases(tglCases)
-      setChartLine({
+      setTotalDataLine({
         labels: labels,
         datasets: [
           {
@@ -88,6 +158,36 @@ export default function Home() {
           {
             label: 'Meninggal',
             data: death,
+            fill: false,
+            borderColor: '#ee6262'
+          },
+        ]
+      })
+      setAddDataLine({
+        labels: labels,
+        datasets: [
+          {
+            label: 'Total Kasus',
+            data: addCases,
+            fill: false,
+            borderColor: '#589bf3',
+          },
+          {
+            label: 'Positif',
+            data: addPositive,
+            fill: false,
+            borderColor: '#f0f358',
+          },
+          {
+            label: 'Sembuh',
+            data: addSecure,
+            fill: false,
+            borderColor: '#72ee62'
+            
+          },
+          {
+            label: 'Meninggal',
+            data: addDeath,
             fill: false,
             borderColor: '#ee6262'
           },
@@ -127,63 +227,20 @@ export default function Home() {
         positive={positive} plusPositive={plusPositive}
       />
       <hr/>
-      <h3 className="subtitle">1 Minggu Terakhir</h3>
+      <h3 className="subtitle">Total 1 Minggu Terakhir</h3>
       <div className="mb30">
         <Line  
-          data={dataChartLine}
+          data={totalDataLine}
           height={300}
-          options={{
-            tooltips: {
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              titleFontFamily: 'Quicksand',
-              bodyFontFamily: 'Quicksand',
-              footerMarginTop: 16,
-              footerFontFamily: 'Quicksand',
-              xPadding: 12,
-              yPadding: 12,
-              borderColor: '#fff',
-              caretSize: 10,
-              multiKeyBackground: '#00000000',
-              callbacks: {
-                footer: function(tooltipItem, data) {
-                  const day = tooltipItem[0].label
-                  const label = data.labels
-                  let date = ''
-                  label.forEach((el, index)=> {
-                    if(day === el) {
-                      date = tglCases[index]
-                    }
-                  })
-                  return date
-                }
-              }
-            },  
-            scales: {
-              yAxes: [{
-                ticks: {
-                  fontFamily: 'Quicksand',
-                  fontColor: 'white'
-                }
-              }],
-              xAxes: [{
-                ticks: {
-                  fontFamily: 'Quicksand',
-                  fontColor: 'white'
-                }
-              }]
-            },        
-            legend: {
-              labels: {
-                fontFamily: 'Quicksand',
-                fontColor: '#ffffff',
-                fontSize: 16,
-                boxWidth: 20
-              }
-              
-            },
-            responsive: true,
-            maintainAspectRatio: false 
-          }}
+          options={options}
+        />
+      </div>
+      <h3 className="subtitle">Penambahan 1 Minggu Terakhir</h3>
+      <div className="mb30">
+        <Line  
+          data={addDataLine}
+          height={300}
+          options={options}
         />
       </div>
       <hr/>
