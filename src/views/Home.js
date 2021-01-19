@@ -11,16 +11,16 @@ const idLocale = require('moment/locale/id');
 moment.locale('id', idLocale)
 
 export default function Home() {
-  let [cases, setCases] = useState(0)
-  let [plusCases, setPlusCases] = useState(0)
-  let [secure, setSecure] = useState(0)
-  let [plusSecure, setPlusSecure] = useState(0)
-  let [death, setDeath] = useState(0)
-  let [plusDeath, setPlusDeath] = useState(0)
-  let [positive, setPositive] = useState(0)
-  let [plusPositive, setPlusPositive] = useState(0)
-  let [date, setDate] = useState(null)
-  let [totalDataLine, setTotalDataLine] = useState({
+  const [cases, setCases] = useState(0)
+  const [plusCases, setPlusCases] = useState(0)
+  const [secure, setSecure] = useState(0)
+  const [plusSecure, setPlusSecure] = useState(0)
+  const [death, setDeath] = useState(0)
+  const [plusDeath, setPlusDeath] = useState(0)
+  const [positive, setPositive] = useState(0)
+  const [plusPositive, setPlusPositive] = useState(0)
+  const [date, setDate] = useState(null)
+  const [totalDataLine, setTotalDataLine] = useState({
     labels: [],
     datasets: [
       {
@@ -29,7 +29,7 @@ export default function Home() {
       }
     ]
   })
-  let [addDataLine, setAddDataLine] = useState({
+  const [addDataLine, setAddDataLine] = useState({
     labels: [],
     datasets: [
       {
@@ -38,7 +38,7 @@ export default function Home() {
       }
     ]
   })
-  let [tglCases, setTglCases] = useState([])
+  const [tglCases, setTglCases] = useState([])
 
   const options = {
     tooltips: {
@@ -104,19 +104,19 @@ export default function Home() {
   useEffect(() => {
     axios.get(`${url}/harian`)
     .then((res)=> {
-      let tglCases = []
+      const tglCases = []
       const start = res.data.length-1-7
       const end = res.data.length-1
       const allData = res.data
-      let labels = []
-      let cases = []
-      let positive = []
-      let secure = []
-      let death = []
-      let addCases = []
-      let addPositive = []
-      let addSecure = []
-      let addDeath = []
+      const labels = []
+      const cases = []
+      const positive = []
+      const secure = []
+      const death = []
+      const addCases = []
+      const addPositive = []
+      const addSecure = []
+      const addDeath = []
       allData.forEach((e, index)=> {
         const day = e.tanggal.split('T')
         if (index > start && index <= end) {
