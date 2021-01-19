@@ -12,7 +12,7 @@ export default function Today(props) {
       <div className={`col-lg d-flex flex-column ${style.box_data} ${style.box_positive}`}>
         <h3 className={`${style.box_title} ${style.box_title_positive}`}>Positif</h3>
         <h2 className={`d-flex flex-wrap ${style.big_number} ${style.number_positive}`}>{props.positive.toLocaleString('id-ID')}</h2>
-        <h4 className={style.small_number}>+{props.plusPositive.toLocaleString('id-ID')}</h4>
+        <h4 className={style.small_number}>{props.plusPositive >= 0 ? `+${props.plusPositive.toLocaleString('id-ID')}` : props.plusPositive.toLocaleString('id-ID')}</h4>
       </div>
       <div className={`col-lg d-flex flex-column ${style.box_data} ${style.box_secure}`}>
         <h3 className={`${style.box_title} ${style.box_title_secure}`}>Sembuh</h3>
