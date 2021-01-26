@@ -2,7 +2,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 export const getTotal = () => (dispatch) => {
-  
+
   const total = {
     cases : 0,
     secure : 0,
