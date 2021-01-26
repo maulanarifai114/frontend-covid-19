@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import { getTotal } from '../configs/redux/actions'
+import { Line } from 'react-chartjs-2';
 import axios from 'axios'
 import moment from 'moment'
-import { Line } from 'react-chartjs-2';
 import Title from '../components/Title'
 import Today from '../components/Today'
 import '../assets/css/home.css'
@@ -11,15 +13,11 @@ const idLocale = require('moment/locale/id');
 moment.locale('id', idLocale)
 
 export default function Home() {
-  const [cases, setCases] = useState(0)
-  const [plusCases, setPlusCases] = useState(0)
-  const [secure, setSecure] = useState(0)
-  const [plusSecure, setPlusSecure] = useState(0)
-  const [death, setDeath] = useState(0)
-  const [plusDeath, setPlusDeath] = useState(0)
-  const [positive, setPositive] = useState(0)
-  const [plusPositive, setPlusPositive] = useState(0)
-  const [date, setDate] = useState(null)
+  const dispatch = useDispatch()
+  // const perweek = useSelector(state => state.perweek)
+  const totaled = useSelector(state => state.total)
+
+  const [tglCases, setTglCases] = useState([])
   const [totalDataLine, setTotalDataLine] = useState({
     labels: [],
     datasets: [
@@ -38,7 +36,6 @@ export default function Home() {
       }
     ]
   })
-  const [tglCases, setTglCases] = useState([])
 
   const options = {
     tooltips: {
@@ -93,21 +90,15 @@ export default function Home() {
     maintainAspectRatio: false 
   }
 
-  const funcSetDate = (payload)=> {
-    const splitT = payload.split('T')
-    const splitZ = splitT[1].split('.000Z')
-    const date = `${splitT[0]} ${splitZ[0]}`
-    setDate(moment(date).format('LLLL'))
-  }
   const url = 'https://apicovid19indonesia-v2.vercel.app/api/indonesia'
 
   useEffect(() => {
     axios.get(`${url}/harian`)
     .then((res)=> {
-      const tglCases = []
       const start = res.data.length-1-7
       const end = res.data.length-1
       const allData = res.data
+      const tglCases = []
       const labels = []
       const cases = []
       const positive = []
@@ -194,37 +185,20 @@ export default function Home() {
         ]
       })
     })
-    axios.get(`${url}/more`)
-    .then((res)=> {
-      const today = res.data
-      setCases(today.total.positif)
-      setSecure(today.total.sembuh)
-      setDeath(today.total.meninggal)
-      setPositive(today.total.dirawat)
-      setPlusCases(today.penambahan.positif)
-      setPlusSecure(today.penambahan.sembuh)
-      setPlusDeath(today.penambahan.meninggal)
-      setPlusPositive(today.penambahan.dirawat)
-      funcSetDate(today.penambahan.created)
-      console.log(today);
-    })
-    .catch((err)=> {
-      console.log(err.response);
-    })
-    
-  }, []);
+    dispatch(getTotal())
+  }, [dispatch]);
 
   return (
     <div className="container">
       <Title 
         name="Data Covid - 19 Indonesia Ter-update"
-        date={date}
+        date={totaled.date}
       />
       <Today 
-        cases={cases} plusCases={plusCases}
-        secure={secure} plusSecure={plusSecure}
-        death={death} plusDeath={plusDeath}
-        positive={positive} plusPositive={plusPositive}
+        cases={totaled.cases} plusCases={totaled.plusCases}
+        secure={totaled.secure} plusSecure={totaled.plusSecure}
+        death={totaled.death} plusDeath={totaled.plusDeath}
+        positive={totaled.positive} plusPositive={totaled.plusPositive}
       />
       <hr/>
       <h3 className="subtitle">Total 1 Minggu Terakhir</h3>
